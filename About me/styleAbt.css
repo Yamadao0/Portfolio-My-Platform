@@ -1,0 +1,211 @@
+/* --- CAUTION  --- */
+/* --- BIG PART OF POSITIONING AND TRANSITIONS IN CSS MAID BY AI CUZ I'M NOT BIG LOVER OF 
+SITTING AND SEARCHING FOR PERFECT POSITION OF EVERY ELEMENT --- */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+body {
+    background-color: #403d39;
+    color: #fffcf2;
+    overflow-x: hidden;
+
+    opacity: 0; 
+    transition: opacity 0.6s ease-in-out;
+}
+body.fade-in {
+    opacity: 1;
+}
+/* --- НАВБАР --- */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #252422;
+    padding: 0 10%;
+    height: 70px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* СТИЛИ ДЛЯ ДОМАШНЕЙ СТРАНИЦЫ */
+.homepage {
+    background: none;
+    border: none;
+    padding: 0; /* Убираем лишнее пространство внутри кнопки */
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.logoPNG {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ccc5b9;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #fffcf2;
+    font-weight: 400;
+    font-size: 16px;
+    transition: 0.3s;
+    opacity: 0.8;
+}
+
+.nav-links a:hover {
+    opacity: 1;
+    color: #ccc5b9;
+}
+
+/* --- СОЦ СЕТИ --- */
+.contact.icons {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 100;
+}
+
+.icon-btn {
+    color: #ccc5b9;
+    font-size: 24px;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.icon-btn:hover {
+    color: #fffcf2;
+    transform: scale(1.2);
+}
+
+/* Бургер-меню для мобильных устройств */
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 20px;
+    }
+
+    .burger {
+        display: block;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 70px;
+        right: -100%;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background: #252422;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 50px;
+        transition: 0.4s;
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    .contact.icons {
+        position: static;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 20px;
+        transform: none;
+    }
+}
+/* ------------------------------------------------------------------------------------------ */
+/* --- ОСНОВНОЙ КОНТЕНТ --- */
+/* Контейнер для всего контента */
+.about-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 120px 5% 50px 120px; /* Слева 120px, чтобы не задеть иконки */
+    gap: 40px;
+}
+
+/* Общий стиль стекла для всех коробок */
+.glass-box {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Настройки левой коробки (письмо) */
+.letter-box {
+    flex: 2; /* Занимает больше места */
+    padding: 30px;
+}
+
+.letter-box h2 { color: #ccc5b9; margin-bottom: 15px; }
+
+/* Настройки правой колонки (видео) */
+.video-grid {
+    flex: 1; /* Занимает меньше места */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.video-card {
+    height: 140px; /* Высота маленьких квадратов под видео */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.video-card:hover {
+    transform: scale(1.02);
+    background: rgba(255, 255, 255, 0.08);
+}
+/* текст почта */
+.mail {
+    position: fixed;   /* Привязываем к экрану */
+    right: 40px;       /* Отступ от правого края */
+    bottom: 30px;      /* Отступ от нижнего края */
+    
+    color: #ccc5b9;    /* фирменный цвет */
+    font-size: 14px;   /* Делаем шрифт поменьше */
+    font-weight: 300;  /* Тонкое начертание */
+    letter-spacing: 1px; /* Разряженный текст выглядит стильнее */
+    
+    opacity: 0.7;      /* Степень прозрачности (0.4 = 40%) */ 
+    
+    z-index: 100;
+}

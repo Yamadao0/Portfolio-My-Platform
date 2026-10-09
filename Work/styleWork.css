@@ -1,0 +1,303 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* --- ОБЩИЕ СТИЛИ --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background-color: #403d39;
+    color: #fffcf2;
+    overflow: hidden; /* Скролл только внутри контейнера с работами */
+}
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* --- НАВИГАЦИЯ БЕЗ АНИМАЦИЙ --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #252422;
+    padding: 0 10%;
+    height: 70px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.logo-container button.homepage {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0;
+}
+
+.logoPNG {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ccc5b9;
+    text-transform: uppercase;
+    margin-left: 10px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #fffcf2;
+    font-size: 16px;
+    font-weight: 500;
+}
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* --- ИКОНКИ СОЦСЕТЕЙ СЛЕВА --- */
+.contact-icons {
+    position: fixed;
+    left: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    z-index: 100;
+}
+
+.icon-btn {
+    color: #ccc5b9;
+    font-size: 24px;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.icon-btn:hover {
+    color: #fffcf2;
+    transform: scale(1.2) translateX(5px);
+}
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* --- КОНТЕЙНЕР РАБОТ --- */
+.work-wrapper {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
+}
+
+.work-container {
+    width: 100%;
+    max-width: 800px;
+    height: calc(100vh - 180px);
+    overflow-y: auto;
+    padding: 20px 40px 100px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.work-container::-webkit-scrollbar {
+    width: 6px;
+}
+.work-container::-webkit-scrollbar-thumb {
+    background: #ccc5b9;
+    border-radius: 10px;
+}
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* --- КАРТОЧКА-БАББЛ --- */
+.glass-box {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 60px;
+}
+
+.work-card {
+    position: relative;
+    padding: 50px 40px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+    animation: fadeIn 0.6s ease;
+}
+
+.work-card:hover {
+    transform: translateY(-8px);
+}
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* Картинка или видео внутри карточки */
+.work-card img, .work-card video {
+    max-width: 100%;
+    border-radius: 20px;
+    margin-top: 15px;
+}
+
+.work-card h3 {
+    margin-bottom: 10px;
+    color: #ccc5b9;
+    font-size: 24px;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 28px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.delete-btn:hover {
+    color: #eb5e28;
+    transform: scale(1.2);
+}
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* --- КНОПКА ДОБАВЛЕНИЯ (+) --- */
+.add-work-btn {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 70px;
+    background: #ccc5b9;
+    border: none;
+    border-radius: 20px;
+    font-size: 40px;
+    color: #252422;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    z-index: 1100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.add-work-btn:hover {
+    background: #fffcf2;
+    transform: translateX(-50%) scale(1.1);
+}
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* --- НОВОЕ МОДАЛЬНОЕ ОКНО --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    width: 90%;
+    max-width: 500px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.modal-content h3 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* Поля ввода */
+.input-field {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    color: white;
+    border-radius: 12px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-field:focus {
+    border-color: #ccc5b9;
+    background: rgba(255, 255, 255, 0.1);
+}
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* Зона загрузки файлов */
+.upload-area {
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+}
+
+.upload-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.upload-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.file-info {
+    font-size: 12px;
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 0.5);
+}
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* Кнопки Add/Cancel */
+.modal-btns {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+.btn-save, .btn-cancel {
+    width: 48%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-save {
+    background: #ccc5b9;
+    color: #252422;
+}
+
+.btn-save:hover {
+    background: #fffcf2;
+}
+
+.btn-cancel {
+    background: #33322f;
+    color: white;
+}
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
