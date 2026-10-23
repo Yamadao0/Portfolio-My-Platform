@@ -26,6 +26,7 @@
             </ul>
         </nav>
     </header>
+
 <!---------------------------------------------------------------------------------------------------------------------------->
 <!-- КОНТАКТНЫЕ ИКОНКИ -->
     <div class="contact-icons">
@@ -33,46 +34,72 @@
         <a href="https://www.linkedin.com/in/aslan-khabulov-6a3693400/" target="_blank" class="icon-btn"><i class="fab fa-linkedin"></i></a>
         <a href="https://www.instagram.com/aslan_khabulov/" target="_blank" class="icon-btn"><i class="fab fa-instagram"></i></a>
     </div>
+
 <!---------------------------------------------------------------------------------------------------------------------------->
 <!-- ОСНОВНОЙ КОНТЕНТ -->
     <main class="work-wrapper">
         <div id="portfolio-list" class="work-container">
-            <div class="glass-box work-card">
-                <h3>Project Title</h3>
-                <p>Ваше описание проекта здесь. Это выглядит как плавный баббл.</p>
-            </div>
+            <!-- Список проектов -->
         </div>
     </main>
 
     <button id="open-modal" class="add-work-btn">+</button>
 
 <!---------------------------------------------------------------------------------------------------------------------------->
-<!-- МОДАЛЬНОЕ ОКНО -->
+<!-- МОДАЛЬНОЕ ОКНО СОЗДАНИЯ / РЕДАКТИРОВАНИЯ -->
 <div id="modal" class="modal-overlay">
     <div class="glass-box modal-content active">
-        <h3>New Project</h3>
+        <button class="custom-close-btn" onclick="closeModal()">&times;</button>
+        <h3 id="modal-heading">New Project</h3>
         
         <div class="modal-inputs">
             <input type="text" id="work-title" placeholder="Project Name" class="input-field">
-            <textarea id="work-desc" placeholder="Description" class="input-field"></textarea>
+            <textarea id="work-desc" placeholder="Description (Use [img1], [img2] to insert images inside text)" class="input-field"></textarea>
             
             <div class="upload-area">
-                <input type="file" id="work-file" accept="image/*,video/*" class="file-input" hidden>
+                <input type="file" id="work-file" accept="image/*,video/*" multiple class="file-input" hidden>
                 <button type="button" class="upload-btn" onclick="document.getElementById('work-file').click();">
-                    <i class="fas fa-file-upload"></i> Upload Image / Video
+                    <i class="fas fa-file-upload"></i> Upload Images / Videos
                 </button>
-                <p id="file-name" class="file-info">No file selected</p>
+                <p class="file-hint">Select multiple files. Click ★ for main cover. Use tag in text to place image inside paragraph.</p>
+                <div id="preview-list" class="preview-files-grid"></div>
             </div>
         </div>
 
         <div class="modal-btns">
             <button onclick="closeModal()" class="btn-cancel">Cancel</button>
-            <button onclick="saveWork()" class="btn-save">Add</button>
+            <button onclick="saveWork()" class="btn-save" id="save-btn-action">Add</button>
         </div>
     </div>
 </div>
+
+<!---------------------------------------------------------------------------------------------------------------------------->
+<!-- МОДАЛЬНОЕ ОКНО ПРОСМОТРА ДЕТАЛЕЙ -->
+<div id="details-modal" class="modal-overlay">
+    <div class="glass-box modal-content active details-content">
+        <button class="custom-close-btn" onclick="closeDetailsModal()">&times;</button>
+        <h2 id="details-title"></h2>
+        
+        <!-- Галерея медиафайлов по центру (для файлов, не вставленных в текст) -->
+        <div id="details-media-container" class="details-media-gallery"></div>
+        
+        <div id="details-desc"></div>
+        
+        <div class="modal-btns action-bar">
+            <button id="edit-project-btn" class="btn-cancel">Edit</button>
+            <button id="delete-project-btn" class="btn-delete">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!---------------------------------------------------------------------------------------------------------------------------->
+<!-- МОДАЛЬНОЕ ОКНО ДЛЯ ПРОСМОТРА КАРТИНКИ -->
+<div id="image-viewer-modal" class="modal-overlay" style="z-index: 3000;">
+    <button class="custom-close-btn" onclick="closeImageViewer()">&times;</button>
+    <img id="full-size-image" src="" alt="Full view" class="full-view-img">
+</div>
+
 <!---------------------------------------------------------------------------------------------------------------------------->
 <script src="ScriptWork.js"></script>
-<!---------------------------------------------------------------------------------------------------------------------------->
 </body>
 </html>
