@@ -13,16 +13,14 @@ const deleteProjectBtn = document.getElementById('delete-project-btn');
 const modalHeading = document.getElementById('modal-heading');
 const saveBtnAction = document.getElementById('save-btn-action');
 
-// Элементы для полноэкранного просмотра картинок
+// Полноэкранный просмотрщик
 const imageViewerModal = document.getElementById('image-viewer-modal');
 const fullSizeImage = document.getElementById('full-size-image');
 
-let uploadedFiles = []; // Массив для хранения загруженных файлов (картинок/видео)
-let editingIndex = null; // Индекс проекта, который сейчас редактируется (если null, значит создаем новый)
+let uploadedFiles = [];
+let editingIndex = null;
 
-// ------------------------------------------------------------------------------------------------------------------------
-// ЛОГИКА ЗАГРУЗКИ ФАЙЛОВ С КАРТИНКАМИ И ВИДЕО
-// ------------------------------------------------------------------------------------------------------------------------
+// Загрузка нескольких файлов
 fileInput.addEventListener('change', (event) => {
     const files = Array.from(event.target.files);
     if (!files.length) return;
@@ -32,7 +30,6 @@ fileInput.addEventListener('change', (event) => {
         const reader = new FileReader();
         reader.onload = function(e) {
             const isFirst = uploadedFiles.length === 0;
-            // Пушим файл в массив со статусом обложки (первый по умолчанию главный)
             uploadedFiles.push({
                 content: e.target.result,
                 type: file.type,
@@ -45,10 +42,10 @@ fileInput.addEventListener('change', (event) => {
         };
         reader.readAsDataURL(file);
     });
-    fileInput.value = ""; // Очищаем инпут, чтобы можно было загрузить тот же файл снова при необходимости
+    fileInput.value = "";
 });
 
-// Рендер превьюшек файлов прямо в модальном окне создания/редактирования
+// Отображение превью файлов в модальном окне загрузки
 function renderUploadPreviews() {
     previewList.innerHTML = '';
     uploadedFiles.forEach((file, idx) => {
@@ -69,13 +66,11 @@ function renderUploadPreviews() {
     });
 }
 
-// Выбор главной обложки карточки (кнопка ★)
 function setMainCover(index) {
     uploadedFiles.forEach((f, i) => f.isCover = (i === index));
     renderUploadPreviews();
 }
 
-// Удаление конкретного файла из загруженных в модалке
 function removeUploadedFile(index) {
     const wasCover = uploadedFiles[index]?.isCover;
     uploadedFiles.splice(index, 1);
@@ -85,16 +80,12 @@ function removeUploadedFile(index) {
     renderUploadPreviews();
 }
 
-// ------------------------------------------------------------------------------------------------------------------------
-// ЗАГРУЗКА И ОТРОВКА ПРОЕКТОВ ИЗ LOCALSTORAGE
-// ------------------------------------------------------------------------------------------------------------------------
 window.addEventListener('DOMContentLoaded', displayWorks);
 
 function displayWorks() {
     portfolioList.innerHTML = "";
     const savedData = JSON.parse(localStorage.getItem('myPortfolio')) || [];
     
-    // Если проектов нет — показываем заглушку
     if (savedData.length === 0) {
         portfolioList.innerHTML = `
             <div class="glass-box work-card empty-card">
@@ -105,13 +96,9 @@ function displayWorks() {
         return;
     }
 
-    // Рендерим каждую карточку проекта в список
     savedData.forEach((item, index) => renderCard(item, index));
 }
 
-// ------------------------------------------------------------------------------------------------------------------------
-// ОТКРЫТИЕ И ЗАКРЫТИЕ МОДАЛЬНЫХ ОКОН
-// ------------------------------------------------------------------------------------------------------------------------
 openModalBtn.onclick = () => {
     editingIndex = null;
     uploadedFiles = [];
@@ -126,7 +113,6 @@ openModalBtn.onclick = () => {
 function closeModal() { modal.style.display = 'none'; }
 function closeDetailsModal() { detailsModal.style.display = 'none'; }
 
-// Открытие картинки на весь экран при клике
 function openImageViewer(src) {
     fullSizeImage.src = src;
     imageViewerModal.style.display = 'flex';
@@ -137,9 +123,6 @@ function closeImageViewer() {
     fullSizeImage.src = '';
 }
 
-// ------------------------------------------------------------------------------------------------------------------------
-// СОХРАНЕНИЕ И УДАЛЕНИЕ ПРОЕКТОВ
-// ------------------------------------------------------------------------------------------------------------------------
 function saveWork() {
     const titleInput = document.getElementById('work-title');
     const descInput = document.getElementById('work-desc');
@@ -151,7 +134,6 @@ function saveWork() {
 
     let currentData = JSON.parse(localStorage.getItem('myPortfolio')) || [];
 
-    // Проверяем, выбрана ли обложка
     if (uploadedFiles.length > 0 && !uploadedFiles.some(f => f.isCover)) {
         uploadedFiles[0].isCover = true;
     }
@@ -163,10 +145,8 @@ function saveWork() {
     };
 
     if (editingIndex !== null) {
-        // Режим редактирования существующего проекта
         currentData[editingIndex] = projectObj;
     } else {
-        // Режим добавления нового проекта
         currentData.push(projectObj);
     }
 
@@ -183,9 +163,7 @@ function deleteWork(index) {
     displayWorks();
 }
 
-// ------------------------------------------------------------------------------------------------------------------------
-// ОТРИСОВКА КАРТОЧКИ В СПИСКЕ (ТАЙТЛ СЛЕВА, МИНИ-КАРТИНКА СПРАВА)
-// ------------------------------------------------------------------------------------------------------------------------
+// Карточка в списке
 function renderCard(item, index) {
     const card = document.createElement('div');
     card.className = 'glass-box work-card list-item-card';
@@ -213,14 +191,11 @@ function renderCard(item, index) {
         </div>
     `;
 
-    // При клике на карточку открываем подробный просмотр проекта
     card.onclick = () => openDetails(index);
     portfolioList.appendChild(card);
 }
 
-// ------------------------------------------------------------------------------------------------------------------------
-// ПРОСМОТР ДЕТАЛЕЙ ПРОЕКТА (ОКНО КНИГИ, ТЕКСТ С [img] ТЕГАМИ И ГАЛЕРЕЯ)
-// ------------------------------------------------------------------------------------------------------------------------
+// Открытие подробностей с поддержкой вставки [img1], [img2] в тексте
 function openDetails(index) {
     const currentData = JSON.parse(localStorage.getItem('myPortfolio')) || [];
     const item = currentData[index];
@@ -229,12 +204,11 @@ function openDetails(index) {
     detailsTitle.textContent = item.title;
 
     const files = item.files || (item.fileContent ? [{ content: item.fileContent, type: item.fileType }] : []);
-    const usedIndices = new Set(); // Сюда закидываем индексы картинок, которые уже вставили внутрь текста
+    const usedIndices = new Set();
 
     let formattedHTML = '';
     const lines = item.desc.split('\n');
 
-    // Парсим текст: ищем теги вида [img1], [img2] и заменяем их картинками прямо между абзацами
     lines.forEach(line => {
         let lineText = line.trim();
         const tagMatch = lineText.match(/^\[img(\d+)\]$/i);
@@ -257,7 +231,7 @@ function openDetails(index) {
 
     detailsDesc.innerHTML = formattedHTML;
 
-    // Оставшиеся файлы (не вставленные через теги в текст) выводим в общую галерею сверху
+    // В верхнюю галерею идут только не использованные в тексте файлы
     detailsMediaContainer.innerHTML = '';
     files.forEach((f, idx) => {
         if (!usedIndices.has(idx)) {
@@ -272,7 +246,6 @@ function openDetails(index) {
         }
     });
 
-    // Привязываем кнопки Редактировать и Удалить внутри окна просмотра
     editProjectBtn.onclick = () => {
         closeDetailsModal();
         openEditModal(index);
@@ -287,9 +260,6 @@ function openDetails(index) {
     detailsModal.style.display = 'flex';
 }
 
-// ------------------------------------------------------------------------------------------------------------------------
-// ОТКРЫТИЕ МОДАЛКИ В РЕЖИМЕ РЕДАКТИРОВАНИЯ
-// ------------------------------------------------------------------------------------------------------------------------
 function openEditModal(index) {
     const currentData = JSON.parse(localStorage.getItem('myPortfolio')) || [];
     const item = currentData[index];
