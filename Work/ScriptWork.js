@@ -13,14 +13,13 @@ const deleteProjectBtn = document.getElementById('delete-project-btn');
 const modalHeading = document.getElementById('modal-heading');
 const saveBtnAction = document.getElementById('save-btn-action');
 
-// Полноэкранный просмотрщик
 const imageViewerModal = document.getElementById('image-viewer-modal');
 const fullSizeImage = document.getElementById('full-size-image');
 
 let uploadedFiles = [];
 let editingIndex = null;
 
-// Загрузка нескольких файлов
+// Загрузка файлов с автоматическим сжатием для экономии localStorage
 fileInput.addEventListener('change', (event) => {
     const files = Array.from(event.target.files);
     if (!files.length) return;
@@ -29,15 +28,41 @@ fileInput.addEventListener('change', (event) => {
     files.forEach((file) => {
         const reader = new FileReader();
         reader.onload = function(e) {
-            const isFirst = uploadedFiles.length === 0;
-            uploadedFiles.push({
-                content: e.target.result,
-                type: file.type,
-                isCover: isFirst
-            });
-            loadedCount++;
-            if (loadedCount === files.length) {
-                renderUploadPreviews();
+            // Если это видео — сохраняем как есть, если картинка — сжимаем
+            if (file.type.startsWith('video/')) {
+                addFileToUpload(e.target.result, file.type);
+                loadedCount++;
+                if (loadedCount === files.length) renderUploadPreviews();
+            } else {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    // Максимальная ширина/высота для оптимизации
+                    const MAX_SIZE = 900;
+                    if (width > height && width > MAX_SIZE) {
+                        height *= MAX_SIZE / width;
+                        width = MAX_SIZE;
+                    } else if (height > MAX_SIZE) {
+                        width *= MAX_SIZE / height;
+                        height = MAX_SIZE;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Сжимаем в JPEG с качеством 0.75 (весит в 10 раз меньше!)
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
+                    
+                    addFileToUpload(compressedDataUrl, 'image/jpeg');
+                    loadedCount++;
+                    if (loadedCount === files.length) renderUploadPreviews();
+                };
+                img.src = e.target.result;
             }
         };
         reader.readAsDataURL(file);
@@ -45,7 +70,15 @@ fileInput.addEventListener('change', (event) => {
     fileInput.value = "";
 });
 
-// Отображение превью файлов в модальном окне загрузки
+function addFileToUpload(content, type) {
+    const isFirst = uploadedFiles.length === 0;
+    uploadedFiles.push({
+        content: content,
+        type: type,
+        isCover: isFirst
+    });
+}
+
 function renderUploadPreviews() {
     previewList.innerHTML = '';
     uploadedFiles.forEach((file, idx) => {
@@ -150,9 +183,14 @@ function saveWork() {
         currentData.push(projectObj);
     }
 
-    localStorage.setItem('myPortfolio', JSON.stringify(currentData));
-    closeModal();
-    displayWorks();
+    try {
+        localStorage.setItem('myPortfolio', JSON.stringify(currentData));
+        closeModal();
+        displayWorks();
+    } catch (e) {
+        alert("Storage limit exceeded! Try uploading smaller images.");
+        console.error(e);
+    }
 }
 
 function deleteWork(index) {
@@ -163,7 +201,6 @@ function deleteWork(index) {
     displayWorks();
 }
 
-// Карточка в списке
 function renderCard(item, index) {
     const card = document.createElement('div');
     card.className = 'glass-box work-card list-item-card';
@@ -195,7 +232,6 @@ function renderCard(item, index) {
     portfolioList.appendChild(card);
 }
 
-// Открытие подробностей с поддержкой вставки [img1], [img2] в тексте
 function openDetails(index) {
     const currentData = JSON.parse(localStorage.getItem('myPortfolio')) || [];
     const item = currentData[index];
@@ -231,7 +267,6 @@ function openDetails(index) {
 
     detailsDesc.innerHTML = formattedHTML;
 
-    // В верхнюю галерею идут только не использованные в тексте файлы
     detailsMediaContainer.innerHTML = '';
     files.forEach((f, idx) => {
         if (!usedIndices.has(idx)) {
