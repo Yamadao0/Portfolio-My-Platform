@@ -1,7 +1,3 @@
-/* --- CAUTION  --- */
-/* --- BIG PART OF POSITIONING AND TRANSITIONS IN CSS MAID BY AI CUZ I'M NOT BIG LOVER OF 
-SITTING AND SEARCHING FOR PERFECT POSITION OF EVERY ELEMENT --- */
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 * {
@@ -10,17 +6,19 @@ SITTING AND SEARCHING FOR PERFECT POSITION OF EVERY ELEMENT --- */
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
 }
+
 body {
     background-color: #403d39;
     color: #fffcf2;
     overflow-x: hidden;
-
     opacity: 0; 
     transition: opacity 0.6s ease-in-out;
 }
+
 body.fade-in {
     opacity: 1;
 }
+
 /* --- НАВБАР --- */
 header {
     position: fixed;
@@ -39,11 +37,10 @@ header {
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-/* СТИЛИ ДЛЯ ДОМАШНЕЙ СТРАНИЦЫ */
 .homepage {
     background: none;
     border: none;
-    padding: 0; /* Убираем лишнее пространство внутри кнопки */
+    padding: 0;
     margin: 0;
     display: flex;
     align-items: center;
@@ -81,7 +78,7 @@ header {
     opacity: 0.8;
 }
 
-.nav-links a:hover {
+.nav-links a:hover, .nav-links a.active {
     opacity: 1;
     color: #ccc5b9;
 }
@@ -110,53 +107,16 @@ header {
     transform: scale(1.2);
 }
 
-/* Бургер-меню для мобильных устройств */
-
-@media (max-width: 768px) {
-    .navbar {
-        padding: 0 20px;
-    }
-
-    .burger {
-        display: block;
-    }
-
-    .nav-links {
-        position: absolute;
-        top: 70px;
-        right: -100%;
-        width: 100%;
-        height: calc(100vh - 70px);
-        background: #252422;
-        flex-direction: column;
-        align-items: center;
-        padding-top: 50px;
-        transition: 0.4s;
-    }
-
-    .nav-links.active {
-        right: 0;
-    }
-
-    .contact.icons {
-        position: static;
-        flex-direction: row;
-        justify-content: center;
-        margin-top: 20px;
-        transform: none;
-    }
-}
-/* ------------------------------------------------------------------------------------------ */
-/* --- ОСНОВНОЙ КОНТЕНТ --- */
-/* Контейнер для всего контента */
+/* --- ОСНОВНОЙ КОНТЕЙНЕР --- */
 .about-container {
     display: flex;
     justify-content: space-between;
-    padding: 120px 5% 50px 120px; /* Слева 120px, чтобы не задеть иконки */
+    padding: 110px 5% 40px 120px;
     gap: 40px;
+    height: 100vh;
+    box-sizing: border-box;
 }
 
-/* Общий стиль стекла для всех коробок */
 .glass-box {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(15px);
@@ -166,27 +126,74 @@ header {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-/* Настройки левой коробки (письмо) */
 .letter-box {
-    flex: 2; /* Занимает больше места */
-    padding: 30px;
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 35px;
+    height: calc(100vh - 160px);
+    cursor: pointer;
+    transition: 0.3s ease;
+    position: relative;
 }
 
-.letter-box h2 { color: #ccc5b9; margin-bottom: 15px; }
+.letter-box:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
 
-/* Настройки правой колонки (видео) */
+.letter-box h2 { 
+    color: #ccc5b9; 
+    margin-bottom: 15px; 
+    flex-shrink: 0;
+}
+
+.letter-scroll-content {
+    overflow-y: auto;
+    padding-right: 10px;
+    flex-grow: 1;
+}
+
+.letter-scroll-content p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #fffcf2;
+    text-align: justify;
+    margin-bottom: 15px;
+}
+
+/* Скроллбар письма */
+.letter-scroll-content::-webkit-scrollbar {
+    width: 6px;
+}
+.letter-scroll-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+.letter-scroll-content::-webkit-scrollbar-thumb {
+    background: rgba(204, 197, 185, 0.4);
+    border-radius: 10px;
+}
+.letter-scroll-content::-webkit-scrollbar-thumb:hover {
+    background: #ccc5b9;
+}
+
+/* --- ПРАВАЯ СЕТКА ВИДЕО --- */
 .video-grid {
-    flex: 1; /* Занимает меньше места */
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    height: calc(100vh - 160px);
 }
 
 .video-card {
-    height: 140px; /* Высота маленьких квадратов под видео */
+    flex: 1;
+    position: relative;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+    border-radius: 20px;
     transition: 0.3s;
 }
 
@@ -194,18 +201,130 @@ header {
     transform: scale(1.02);
     background: rgba(255, 255, 255, 0.08);
 }
-/* текст почта */
+
+.video-card video, .video-card img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+}
+
+.video-overlay-title {
+    position: relative;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 8px 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+}
+
+.video-overlay-title span {
+    color: #ccc5b9;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+/* --- ПОЧТА --- */
 .mail {
-    position: fixed;   /* Привязываем к экрану */
-    right: 40px;       /* Отступ от правого края */
-    bottom: 30px;      /* Отступ от нижнего края */
-    
-    color: #ccc5b9;    /* фирменный цвет */
-    font-size: 14px;   /* Делаем шрифт поменьше */
-    font-weight: 300;  /* Тонкое начертание */
-    letter-spacing: 1px; /* Разряженный текст выглядит стильнее */
-    
-    opacity: 0.7;      /* Степень прозрачности (0.4 = 40%) */ 
-    
+    position: fixed;
+    right: 40px;
+    bottom: 30px;
+    color: #ccc5b9;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    opacity: 0.7;
     z-index: 100;
+}
+
+/* --- МОДАЛЬНЫЕ ОКНА --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.letter-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    max-height: 85vh;
+    padding: 40px 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-letter-body {
+    overflow-y: auto;
+    max-height: 70vh;
+    padding-right: 10px;
+    margin-top: 15px;
+}
+
+.modal-letter-body p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #fffcf2;
+    text-align: justify;
+    margin-bottom: 20px;
+}
+
+.modal-letter-body::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-letter-body::-webkit-scrollbar-thumb {
+    background: #ccc5b9;
+    border-radius: 10px;
+}
+
+.custom-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    background: transparent !important;
+    border: none !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-size: 28px !important;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 10;
+}
+
+.custom-close-btn:hover {
+    color: #fffcf2 !important;
+    transform: scale(1.2);
+}
+
+/* --- АДАПТИВНОСТЬ --- */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 20px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .contact.icons {
+        position: static;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 20px;
+        transform: none;
+    }
+
+    .about-container {
+        flex-direction: column;
+        padding: 90px 20px 40px 20px;
+        height: auto;
+    }
+
+    .letter-box, .video-grid {
+        height: auto;
+    }
 }
