@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Portfolio Card - Aslan Khabulov</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<!-- ---------------------------------------------------------------------------------------- -->
+   <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
+  <header>
+<nav class="navbar">
+  <div class="logo-container">
+    <button class="homepage" onclick="window.location.href='index.html'">
+    <img src="LOGO.png" class="logoPNG" alt="Logo" />
+    <div class="logo">MySite</div>
+    </button>
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="../About me/AboutMe.html">About me</a></li>
+    <li><a href="../Work/indexWork.html">Work</a></li>
+    <li><a href="https://wa.me/87013096484">Contact</a></li>
+  </ul>
+
+  <div class="burger" onclick="toggleMenu()">
+    ☰
+  </div>
+</nav>
+</header>
+<!-- ---------------------------------------------------------------------------------------- -->
+ <!-- СОЦ СЕТИ -->
+<div class="contact icons">
+<a href="https://github.com/Yamadao0" target="_blank" class="icon-btn">
+<i class="fab fa-github"></i>
+</a>
+
+<a href="https://www.linkedin.com/in/aslan-khabulov-6a3693400/" target="_blank" class="icon-btn">
+<i class="fab fa-linkedin"></i>
+</a>
+
+<a href="https://www.instagram.com/aslan_khabulov/" target="_blank" class="icon-btn">
+<i class="fab fa-instagram"></i>
+</a>
+</div>
+<!-- ---------------------------------------------------------------------------------------- -->
+ <!-- ГЛАВНЫЙ БЛОК -->
+    <div class="main"> 
+    <div class="content"> 
+        
+        <img src="FACE.png" class="rounded-image" alt="Aslan Khabulov" />
+        <h1>Aslan Khabulov</h1>
+        <p class="title">Software Engineer - Student</p>
+        
+        <div class="extra-text">
+            <p>A highly diligent and capable programming student, demonstrating strong analytical thinking, consistent discipline, and a commitment to mastering complex technical concepts.</p>
+            <a href="../About me/AboutMe.html" class="more-btn">
+              Learn More
+            <i class="fas fa-arrow-right"></i> </a>
+        </div>
+
+    </div> 
+    </div>
+<!-- ---------------------------------------------------------------------------------------- -->
+<div class = "mail">
+  <div class = "work-mail">
+    Work email: aslankhabulov2007@gmail.com
+  </div>
+  <div class = "personal-mail">
+    Personal email: iamadakuragane@gmail.com
+  </div>
+</div>
+<!-- ---------------------------------------------------------------------------------------- -->
+<script>
+function toggleMenu() {
+ document.querySelector('.nav-links').classList.toggle('active');
+}
+</script>
+<!-- ---------------------------------------------------------------------------------------- -->
+ <script>
+  window.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.add('fade-in');
+  });
+</script>
+<!-- ---------------------------------------------------------------------------------------- -->
+    </div>
+</body>
+</html> 
